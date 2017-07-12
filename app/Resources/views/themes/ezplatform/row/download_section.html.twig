@@ -41,7 +41,7 @@
                                     {{ ez_render_field(content, 'composer_description') }}
                                 </div>
                             </div>
-                            {{ include("@ezdesign/composer/install.html.twig", with_context = false) }}
+                            {% include "@ezdesign/composer/install.html.twig" only %}
                         </div>
                     {% endif %}
 

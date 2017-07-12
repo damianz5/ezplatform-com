@@ -31,7 +31,7 @@
         {% endblock %}
 
         {% block head_tracking %}
-            {{ include('@ezdesign/layout/tracking_head.html.twig', with_context = false) }}
+            {% include '@ezdesign/layout/tracking_head.html.twig' only %}
         {% endblock %}
 
         {% block canonical %}
@@ -43,7 +43,7 @@
         {% endblock %}
 
             {% block header %}
-                {{ include('@ezdesign/layout/header.html.twig', with_context = false) }}
+                {% include '@ezdesign/layout/header.html.twig' only %}
             {% endblock %}
 
             {% block content %}
@@ -54,7 +54,7 @@
                       'template': '@ezdesign/layout/footer.html.twig'
                 })) }}
             {% endblock %}
-            {{ include('@ezdesign/layout/scripts.html.twig', with_context = false) }}
+            {% include '@ezdesign/layout/scripts.html.twig' only %}
         </main>
     </body>
 </html>
