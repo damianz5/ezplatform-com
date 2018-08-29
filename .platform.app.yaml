@@ -25,6 +25,7 @@ relationships:
     # If you wish to have a separate Redis instance for sessions, uncomment
     # this relationship and the corresponding service in .platform/services.yaml
     #redissession: 'redissession:redis'
+    varnish: "varnish:http"
 
 variables:
     #php:
@@ -37,6 +38,8 @@ variables:
         SYMFONY_ENV: prod
         # Uncomment if you want to use DFS clustering:
         #PLATFORMSH_DFS_NFS_PATH: 'dfsdata'
+        SYMFONY_HTTP_CACHE: 0
+        SYMFONY_TRUSTED_PROXIES: "127.0.0.1,localhost,varnish.internal"
 
 # The configuration of app when it is exposed to the web.
 web:
