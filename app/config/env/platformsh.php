@@ -128,3 +128,10 @@ if (isset($relationships['solr'])) {
         $container->setParameter('solr_dsn', sprintf('http://%s:%d/%s', $endpoint['host'], $endpoint['port'], 'solr'));
     }
 }
+
+if (isset($relationships['varnish'])) {
+    foreach ($relationships['varnish'] as $endpoint) {
+        $container->setParameter('purge_type', 'http');
+        $container->setParameter('purge_server', sprintf('http://%s:%d', $endpoint['host'], $endpoint['port']));
+    }
+}

@@ -118,3 +118,10 @@ parameters:
 
     # Admin siteaccess group name
     admin_group_name: admin_group
+
+
+    varnish_invalidate_token_name: '%env(HTTPCACHE_VARNISH_INVALIDATE_TOKEN_NAME)%'
+    varnish_invalidate_token: '%env(HTTPCACHE_VARNISH_INVALIDATE_TOKEN)%'
+
+    env(HTTPCACHE_VARNISH_INVALIDATE_TOKEN_NAME): 'x-purge-token'
+    env(HTTPCACHE_VARNISH_INVALIDATE_TOKEN): 'XTOKEN'

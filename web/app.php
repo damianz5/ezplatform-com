@@ -7,6 +7,8 @@ use Symfony\Component\Debug\Debug;
 setlocale(LC_CTYPE, 'C.UTF-8');
 require __DIR__ . '/../vendor/autoload.php';
 
+putenv('SYMFONY_HTTP_CACHE=0');
+
 // Environment is taken from "SYMFONY_ENV" variable, if not set, defaults to "prod"
 $environment = getenv('SYMFONY_ENV');
 if ($environment === false) {
@@ -48,8 +50,20 @@ $request = Request::createFromGlobals();
 //
 // NOTE: You'll potentially need to customize these lines for your proxy depending on which forward headers to use!
 // SEE: https://symfony.com/doc/3.4/deployment/proxies.html
+
+putenv('SYMFONY_TRUSTED_PROXIES=varnish,' . $request->getHost());
+
 if ($trustedProxies = getenv('SYMFONY_TRUSTED_PROXIES')) {
-    Request::setTrustedProxies(explode(',', $trustedProxies), Request::HEADER_X_FORWARDED_ALL);
+    //Request::setTrustedProxies(explode(',', $trustedProxies), Request::HEADER_X_FORWARDED_ALL);
+    Request::setTrustedProxies(
+        // trust *all* requests
+        array($request->server->get('REMOTE_ADDR'), '127.0.0.1'),
+
+        //Request::HEADER_X_FORWARDED_ALL
+
+        // if you're using ELB, otherwise use a constant from above
+        Request::HEADER_X_FORWARDED_AWS_ELB
+    );
 }
 
 $response = $kernel->handle($request);
