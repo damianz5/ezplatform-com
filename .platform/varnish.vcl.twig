@@ -15,12 +15,6 @@ acl debuggers {
     "240.0.0.0"/4;
 }
 
-backend test_1 {
-.host = "127.0.0.1";
-.port = "8080";
-}
-
-
 {% for relationship in relationships %}
    {% for instance in relationship.instances %}
        backend {{relationship.name}}_{{loop.index}} {
@@ -39,29 +33,8 @@ sub vcl_init {
    {% endfor %}
 }
 
-sub vcl_synth {
-    if (resp.status == 800) {
-      set resp.http.Content-Type = "text/html; charset=utf-8";
-      set resp.status = 503;
-      set resp.http.Cache-Control = "no-store, no-cache, must-revalidate, post-check=0, pre-check=0, max-age=0";
-      synthetic( {"
-        <html><head></head>
-        <body>
-        Sorry this website is currently under going maintenance, please try again soon.
-        {{ dump() }}
-        </body></html>
-        "} );
-      return (deliver);
-   }
-}
-
 // Called at the beginning of a request, after the complete request has been received
 sub vcl_recv {
-
-
-    return (synth(800, "Maintenance page"));
-
-
     {% for relationship in relationships %}
         set req.backend_hint = {{relationship.name}}.backend();
     {% endfor %}
